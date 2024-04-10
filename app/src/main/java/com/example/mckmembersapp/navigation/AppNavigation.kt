@@ -31,6 +31,7 @@ fun AppNavigation() {
             val loginViewModel = hiltViewModel<LoginViewModel>()
             LoginScreen(navController = navController,viewModel=loginViewModel)
         }
+
     }
 
 }
