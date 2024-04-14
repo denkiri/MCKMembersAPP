@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -17,12 +18,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -241,6 +244,308 @@ fun ReceiptCard(){
     }
 }
 @Composable
+fun Intro(){
+    val isDarkTheme = isSystemInDarkTheme()
+    val backgroundColor = if (isDarkTheme) Color.Black else Color.White
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+    Text(
+        text = stringResource(id = R.string.proverbs_3_9_niv_says_honor_the_lord_with_your_wealth_with_the_first_fruits_of_all_your_crops),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(3.dp),
+        textAlign = TextAlign.Center,
+        fontWeight = FontWeight.Bold,
+        fontSize = 14.sp,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis, color = textColor
+    )
+}
+@Composable
+fun Report() {
+    val isDarkTheme = isSystemInDarkTheme()
+    val backgroundColor = if (isDarkTheme) Color.Black else Color.White
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(5.dp),
+        elevation = CardDefaults.cardElevation(
+            defaultElevation = 14.dp
+        ),
+        shape = RoundedCornerShape(10.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .background(color = backgroundColor)
+                .fillMaxWidth(),
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(5.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .background(color = md_theme_light_primary)
+                        .fillMaxWidth(),
+                ) {
+                    Text(
+                        text = "Tithe Contribution",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(5.dp),
+                        textAlign = TextAlign.Center,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = Color.White,
+
+                        )
+                }
+
+                Image(
+                    painter = painterResource(id = R.drawable.tithe1_round),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .size(100.dp, 80.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                )
+                {
+                    Text(
+                        text = "Today",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = textColor
+                    )
+                    Text(
+                        text = "Month",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = textColor
+                    )
+                    Text(
+                        text = "Year",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = textColor
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                )
+                {
+                    Text(
+                        text = "Today Contribution",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = textColor
+                    )
+                    Text(
+                        text = "Month Contribution",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = textColor
+                    )
+                    Text(
+                        text = "Year Contribution",
+                        modifier = Modifier
+                            .padding(4.dp),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        color = textColor
+                    )
+                }
+            }
+        }
+    }
+}
+@Composable
+fun ReceiptPreview() {
+    val isDarkTheme = isSystemInDarkTheme()
+    val backgroundColor = if (isDarkTheme) Color.Black else Color.White
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+    Box(
+        modifier = Modifier
+            .background(color = backgroundColor)
+            .fillMaxWidth(),
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(40.dp)
+            ) {
+                Text(
+                    text = "Print Preview",
+                    modifier = Modifier.align(Alignment.Center),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = textColor
+                )
+            }
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 20.dp)
+                    .padding(bottom = 20.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    text = "METHODIST CHURCH IN KENYA",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(5.dp),
+                    color = textColor
+                )
+                Text(
+                    text = "NYAMBENE SYNOD",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(5.dp),
+                    color = textColor
+                )
+                Text(
+                    text = "MCK KIEGOI",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(5.dp),
+                    color = textColor
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "RNO",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(5.dp),
+                        color = textColor
+                    )
+                    Text(
+                        text = "5/07/2023",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(5.dp),
+                        color = textColor
+                    )
+                }
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp)
+                        .background(Color.Gray)
+                        .padding(5.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Name",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                    Text(
+                        text = "Amount",
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 16.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "Member Name",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                    Text(
+                        text = "00.00",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(2.dp)
+                        .background(Color.Gray)
+                        .padding(5.dp)
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "TOTAL THIS MONTH",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                    Text(
+                        text = "00.00",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = "TOTAL THIS YEAR",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                    Text(
+                        text = "00.00",
+                        fontSize = 14.sp,
+                        modifier = Modifier.padding(4.dp),
+                        color = textColor
+                    )
+                }
+                Text(
+                    text = "Payment of:Tithe",
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 14.sp,
+                    modifier = Modifier.padding(4.dp),
+                    color = textColor
+                )
+            }
+        }
+    }
+}
+
+@Composable
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview
 fun HeaderCardPreview(){
@@ -252,7 +557,24 @@ fun HeaderCardPreview(){
 @Preview
 fun ReceiptCardPreview(){
     ReceiptCard()
-
+}
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+fun IntroPreview(){
+    Intro()
+}
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+fun ReportPreview(){
+ Report()
+}
+@Composable
+@Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Preview
+fun ReceiptPrev(){
+ReceiptPreview()
 }
 
 
