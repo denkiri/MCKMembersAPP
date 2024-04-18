@@ -7,6 +7,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.mckmembersapp.screens.home.HomeScreen
 import com.example.mckmembersapp.screens.login.LoginViewModel
 import com.example.mckmembersapp.screens.login.LoginScreen
 import com.example.mckmembersapp.screens.splashscreen.SplashScreen
@@ -30,6 +31,10 @@ fun AppNavigation() {
         composable("login") {
             val loginViewModel = hiltViewModel<LoginViewModel>()
             LoginScreen(navController = navController,viewModel=loginViewModel)
+        }
+        composable("home_screen") {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            HomeScreen(navController = navController, viewModel = loginViewModel)
         }
 
     }

@@ -75,6 +75,8 @@ dependencies {
     implementation (libs.androidx.core.ktx)
     implementation (libs.androidx.hilt.navigation.compose)
     implementation (libs.accompanist.systemuicontroller)
+    // For preference Datastore
+    implementation (libs.androidx.datastore.preferences)
     //kotlin serialization
     implementation(libs.kotlinx.serialization.json)
     //dependency injection with hilt

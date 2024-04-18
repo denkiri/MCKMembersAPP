@@ -56,31 +56,31 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
         viewModel.loginState
     }
 
-//    val authState by viewModel.loginRequestResult.collectAsState()
-//    LaunchedEffect(authState) {
-//        if (authState is Resource.Success && authState.data != null) {
-//            viewModel.saveProfile(authState.data!!)
-//            navController.navigate("home_screen")
-//            viewModel.resetStates()
-//            Log.d("loginDataResponse", "ProfileData: ${authState.data}")
-//        }
-//    }
-//    when (authState) {
-//        is Resource.Idle -> {
-//        }
-//        is Resource.Loading -> {
-//            LinearProgressIndicator()
-//        }
-//        is Resource.Success -> {
-//            if (authState.data != null) {
-//                Toast(message = "Login Successful")
-//            }
-//        }
-//        is Resource.Error -> {
-//            Toast(message = authState.data.toString())
-//            Log.d("loginDataResponse", "errorMessage: ${authState.message.toString()}")
-//        }
-//    }
+    val authState by viewModel.loginRequestResult.collectAsState()
+    LaunchedEffect(authState) {
+        if (authState is Resource.Success && authState.data?.profile != null) {
+            viewModel.saveProfile(authState.data!!.profile)
+            navController.navigate("home_screen")
+            viewModel.resetStates()
+            Log.d("loginDataResponse", "ProfileData: ${authState.data}")
+        }
+    }
+    when (authState) {
+        is Resource.Idle -> {
+        }
+        is Resource.Loading -> {
+            LinearProgressIndicator()
+        }
+        is Resource.Success -> {
+            if (authState.data != null) {
+                Toast(message = authState.data?.message.toString())
+            }
+        }
+        is Resource.Error -> {
+            Toast(message = authState.data.toString())
+            Log.d("loginDataResponse", "errorMessage: ${authState.message.toString()}")
+        }
+    }
 
     Box(modifier = Modifier
         .fillMaxSize()
@@ -147,8 +147,8 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
                                 onClick = {
                                     viewModel.onUiEvent(loginUiEvent = LoginUiEvent.Submit)
                                     if (loginState.isLoginSuccessful) {
-//                                        viewModel.performLogin(viewModel.loginState.value.username.trim(),
-//                                            viewModel.loginState.value.password.trim())
+                                        viewModel.performLogin(viewModel.loginState.value.username.trim(),
+                                            viewModel.loginState.value.password.trim())
 
                                     }
                                 }
@@ -163,13 +163,13 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
         }
     }
 }
-@Composable
-@Preview
-fun LoginScreenPreview() {
-    val navController = rememberNavController()
-    val viewModel = LoginViewModel() // Provide a dummy instance of LoginViewModel here
-    LoginScreen(navController = navController, viewModel = viewModel)
-}
+//@Composable
+//@Preview
+//fun LoginScreenPreview() {
+//    val navController = rememberNavController()
+//    val viewModel = LoginViewModel() // Provide a dummy instance of LoginViewModel here
+//    LoginScreen(navController = navController, viewModel = viewModel)
+//}
 fun Context.showToast(message: String) {
     android.widget.Toast.makeText(this, message, android.widget.Toast.LENGTH_SHORT).show()
 }

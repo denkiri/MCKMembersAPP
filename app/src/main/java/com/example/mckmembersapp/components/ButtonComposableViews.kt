@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.mckmembersapp.Greeting
 import com.example.mckmembersapp.ui.theme.AppTheme
 import com.example.mckmembersapp.ui.theme.AppTheme.dimens
 import com.example.mckmembersapp.ui.theme.md_theme_dark_onSecondary

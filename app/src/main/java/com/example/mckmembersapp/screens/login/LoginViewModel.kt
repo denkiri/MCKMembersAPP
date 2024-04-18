@@ -4,6 +4,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mckmembersapp.components.ErrorState
 import com.example.mckmembersapp.data.Resource
+import com.example.mckmembersapp.models.auth.Profile
+import com.example.mckmembersapp.models.auth.ProfileData
+import com.example.mckmembersapp.repository.LoginRepository
 import com.example.mckmembersapp.screens.login.state.LoginErrorState
 import com.example.mckmembersapp.screens.login.state.LoginState
 import com.example.mckmembersapp.screens.login.state.LoginUiEvent
@@ -15,9 +18,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
-class LoginViewModel @Inject constructor(
-  //  private val repository: LoginRepository
-) : ViewModel(){
+class LoginViewModel @Inject constructor(private val repository: LoginRepository) : ViewModel(){
     var loginState = mutableStateOf(LoginState())
 
     fun resetStates() {
@@ -112,67 +113,67 @@ class LoginViewModel @Inject constructor(
             }
         }
     }
-//    private val _loginRequestResult = MutableStateFlow<Resource<Profile>>(Resource.Idle())
-//    val loginRequestResult: StateFlow<Resource<Profile>> = _loginRequestResult
-//    fun performLogin(username: String, password: String) {
-//        viewModelScope.launch {
-//            _loginRequestResult.value = Resource.Loading()
-//            try {
-//                val loginResponse = repository.loginMember(username, password)
-//                if (loginResponse is Resource.Success) {
-//                    _isLoading.value = false
-//                    _loginRequestResult.value = Resource.Success(loginResponse.data!!)
-//                } else {
-//                    _loginRequestResult.value = Resource.Error(loginResponse.message)
-//                    _isLoading.value = false
-//                }
-//            } catch (e: Exception) {
-//                _isLoading.value = false
-//                _loginRequestResult.value = Resource.Error("Login failed: ${e.message}")
-//            }
-//        }
-//    }
-//    private val _profileResult = MutableStateFlow<Resource<Profile>>(Resource.Idle())
-//    val profileResult: StateFlow<Resource<Profile>> = _profileResult
-//    fun getProfile() {
-//
-//        viewModelScope.launch {
-//            try {
-//                // Call the repository function to get LiveData<Resource<Profile>>
-//                val profileLiveData = repository.getProfile()
-//
-//                // Observe the LiveData from the repository to handle Resource states
-//                profileLiveData.observeForever { resource ->
-//                    when (resource) {
-//                        is Resource.Loading -> {
-//                            _profileResult.value =
-//                                Resource.Loading() // Notify UI that profile data is loading
-//                        }
-//
-//                        is Resource.Success -> {
-//                            // Update _profileResult with the success data
-//                            _profileResult.value = resource
-//                            _isLoading.value = false
-//                        }
-//
-//                        is Resource.Error -> {
-//                            // Update _profileResult with the error message
-//                            _profileResult.value = resource
-//                            _isLoading.value = false
-//                        }
-//
-//                        else -> {}
-//                    }
-//                }
-//            } catch (e: Exception) {
-//                // Handle any exceptions
-//                _profileResult.value = Resource.Error("Error: ${e.message}")
-//            }
-//        }
-//    }
-//    fun saveProfile(data:Profile){
-//        repository.saveProfile(data)
-//    }
+    private val _loginRequestResult = MutableStateFlow<Resource<ProfileData>>(Resource.Idle())
+    val loginRequestResult: StateFlow<Resource<ProfileData>> = _loginRequestResult
+    fun performLogin(mobileNumber: String, password: String) {
+        viewModelScope.launch {
+            _loginRequestResult.value = Resource.Loading()
+            try {
+                val loginResponse = repository.loginMember(mobileNumber, password)
+                if (loginResponse is Resource.Success) {
+                    _isLoading.value = false
+                    _loginRequestResult.value = Resource.Success(loginResponse.data!!)
+                } else {
+                    _loginRequestResult.value = Resource.Error(loginResponse.message)
+                    _isLoading.value = false
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _loginRequestResult.value = Resource.Error("Login failed: ${e.message}")
+            }
+        }
+    }
+    private val _profileResult = MutableStateFlow<Resource<Profile>>(Resource.Idle())
+    val profileResult: StateFlow<Resource<Profile>> = _profileResult
+    fun getProfile() {
+
+        viewModelScope.launch {
+            try {
+                // Call the repository function to get LiveData<Resource<Profile>>
+                val profileLiveData = repository.getProfile()
+
+                // Observe the LiveData from the repository to handle Resource states
+                profileLiveData.observeForever { resource ->
+                    when (resource) {
+                        is Resource.Loading -> {
+                            _profileResult.value =
+                                Resource.Loading() // Notify UI that profile data is loading
+                        }
+
+                        is Resource.Success -> {
+                            // Update _profileResult with the success data
+                            _profileResult.value = resource
+                            _isLoading.value = false
+                        }
+
+                        is Resource.Error -> {
+                            // Update _profileResult with the error message
+                            _profileResult.value = resource
+                            _isLoading.value = false
+                        }
+
+                        else -> {}
+                    }
+                }
+            } catch (e: Exception) {
+                // Handle any exceptions
+                _profileResult.value = Resource.Error("Error: ${e.message}")
+            }
+        }
+    }
+    fun saveProfile(data: Profile){
+        repository.saveProfile(data)
+    }
 
 
 }

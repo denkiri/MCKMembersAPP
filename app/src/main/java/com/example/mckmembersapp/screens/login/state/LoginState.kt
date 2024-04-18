@@ -1,8 +1,5 @@
 package com.example.mckmembersapp.screens.login.state
-
 import com.example.mckmembersapp.components.ErrorState
-
-
 /**
  * Login State holding ui input values
  */
