@@ -5,6 +5,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Password
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PhoneIphone
+import androidx.compose.material.icons.filled.Pin
 import androidx.compose.material.icons.outlined.Visibility
 import androidx.compose.material.icons.outlined.VisibilityOff
 import androidx.compose.material3.*
@@ -54,7 +56,7 @@ fun PasswordTextField(
         },
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Password,
+                imageVector = Icons.Default.Pin,
                 contentDescription = "Password icon",
                 tint = textColor // Set the icon color to match the text color
             )
@@ -82,7 +84,7 @@ fun PasswordTextField(
                 Icon(
                     imageVector = passwordVisibilityIconAndText.first,
                     contentDescription = passwordVisibilityIconAndText.second,
-                    tint = Color.White
+                    tint = textColor
                 )
             }
         },
@@ -134,7 +136,7 @@ fun UsernameTextField(
         label = { Text(text = label, style = TextStyle(color = textColor)) }, // Set text color here
         leadingIcon = {
             Icon(
-                imageVector = Icons.Default.Person,
+                imageVector = Icons.Default.PhoneIphone,
                 contentDescription = "Username icon",
                 tint = textColor // Set the icon color to match the text color
             )

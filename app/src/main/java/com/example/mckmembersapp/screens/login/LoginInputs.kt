@@ -44,7 +44,7 @@ fun LoginInputs(
 
             value = loginState.username,
             onValueChange = onEmailChange,
-            label = stringResource(id = R.string.login_email_id),
+            label = stringResource(id = R.string.mobile),
             isError = loginState.errorState.usernameErrorState.hasError,
             errorText = stringResource(id = loginState.errorState.usernameErrorState.errorMessageStringResource)
         )
@@ -83,7 +83,7 @@ fun RegisterInputs(
                 .padding(top = AppTheme.dimens.paddingLarge),
             value = loginState.username,
             onValueChange = onEmailChange,
-            label = stringResource(id = R.string.login_email_id),
+            label = stringResource(id = R.string.mobile),
             isError = loginState.errorState.usernameErrorState.hasError,
             errorText = stringResource(id = loginState.errorState.usernameErrorState.errorMessageStringResource)
         )

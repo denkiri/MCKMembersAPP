@@ -16,7 +16,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import retrofit2.await
 import javax.inject.Inject
-
 class LoginRepository @Inject constructor(private val api: Endpoints, db: MCKDatabase, application: Application){
     private val profileDao: ProfileDao
     private val context: Context
@@ -28,7 +27,7 @@ class LoginRepository @Inject constructor(private val api: Endpoints, db: MCKDat
     suspend fun loginMember(mobileNumber: String, password: String): Resource<ProfileData> {
         return try {
             Resource.Loading(data = true)
-            val response = api.signIn(mobileNumber, password).await() // Wait for the response
+            val response = api.signIn(mobileNumber, password).await()
             Resource.Loading(data = false)
 
             run {

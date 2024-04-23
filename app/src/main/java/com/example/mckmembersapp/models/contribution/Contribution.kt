@@ -1,6 +1,7 @@
 package com.example.mckmembersapp.models.contribution
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+
 class Contribution {
     @SerializedName("contribution_id")
     @Expose

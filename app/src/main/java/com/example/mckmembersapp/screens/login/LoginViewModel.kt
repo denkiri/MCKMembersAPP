@@ -20,7 +20,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val repository: LoginRepository) : ViewModel(){
     var loginState = mutableStateOf(LoginState())
-
     fun resetStates() {
         loginState.value = LoginState()
 //        _loginRequestResult.value = Resource.Idle()

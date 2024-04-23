@@ -1,7 +1,6 @@
 package com.example.mckmembersapp.screens.login
 import android.content.Context
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -15,9 +14,14 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LinearProgressIndicator
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -26,30 +30,26 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
-import com.example.mckmembersapp.components.Toast
 import com.example.mckmembersapp.R
 import com.example.mckmembersapp.components.NormalButton
+import com.example.mckmembersapp.components.Toast
 import com.example.mckmembersapp.data.Resource
 import com.example.mckmembersapp.screens.login.state.LoginUiEvent
 import com.example.mckmembersapp.ui.theme.AppTheme
+import com.example.mckmembersapp.ui.theme.md_theme_light_primary
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
+
     val isDarkTheme = isSystemInDarkTheme()
     val backgroundColor = if (isDarkTheme) Color.Black else Color.White
     val loginState by remember {
@@ -69,11 +69,10 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
         is Resource.Idle -> {
         }
         is Resource.Loading -> {
-            LinearProgressIndicator()
+            LinearProgressIndicator(color = md_theme_light_primary, modifier = Modifier.fillMaxWidth())
         }
         is Resource.Success -> {
             if (authState.data != null) {
-                Toast(message = authState.data?.message.toString())
             }
         }
         is Resource.Error -> {
