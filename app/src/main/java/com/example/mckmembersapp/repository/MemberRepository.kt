@@ -31,6 +31,19 @@ class MemberRepository @Inject constructor(private val api: Endpoints, db: MCKDa
                 Resource.Error(message = exception.message.toString())
             }
         }
+    suspend fun customMemberReport(authToken:String?,memberId: String?,day:String?,month:String?,year:String?,churchId: String?): Resource<MemberReportData> {
+        return try {
+            Resource.Loading(data = true)
+            val response = api.customMemberReport(authToken,memberId,day,month,year,churchId).await()
+            Resource.Loading(data = false)
+
+            run {
+                Resource.Success(data = response)
+            }
+        } catch (exception: Exception) {
+            Resource.Error(message = exception.message.toString())
+        }
+    }
     fun getProfile(): LiveData<Resource<Profile>> {
         val resultLiveData = MutableLiveData<Resource<Profile>>()
         resultLiveData.value = Resource.Loading()

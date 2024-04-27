@@ -33,6 +33,27 @@ class HomeViewModel @Inject constructor(private val repository: MemberRepository
             }
         }
     }
+    private val _customReportDataRequestResult = MutableStateFlow<Resource<MemberReportData>>(Resource.Idle())
+    val customMemberReportRequestResult: StateFlow<Resource<MemberReportData>> = _customReportDataRequestResult
+    fun getCustomMemberReportData(authToken:String?,memberId: String?,day:String?,month:String?,year:String?,churchId: String?) {
+        viewModelScope.launch {
+            _customReportDataRequestResult.value = Resource.Loading()
+            try {
+                val reportResponse = repository.customMemberReport(authToken, memberId, day, month, year, churchId)
+                if (reportResponse is Resource.Success) {
+                    _isLoading.value = false
+                    _customReportDataRequestResult.value = Resource.Success(reportResponse.data!!)
+                } else {
+                    _customReportDataRequestResult.value = Resource.Error(reportResponse.message)
+                    _isLoading.value = false
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _customReportDataRequestResult.value = Resource.Error("Report failed: ${e.message}")
+            }
+        }
+    }
+
     private val _profileResult = MutableStateFlow<Resource<Profile>>(Resource.Idle())
     val profileRequestResult: StateFlow<Resource<Profile>> = _profileResult
     fun getProfile() {

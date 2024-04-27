@@ -15,13 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,17 +33,15 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import coil.size.Scale
 import com.example.mckmembersapp.R
+import com.example.mckmembersapp.components.Loader
 import com.example.mckmembersapp.components.NormalButton
 import com.example.mckmembersapp.components.Toast
 import com.example.mckmembersapp.data.Resource
 import com.example.mckmembersapp.screens.login.state.LoginUiEvent
 import com.example.mckmembersapp.ui.theme.AppTheme
-import com.example.mckmembersapp.ui.theme.md_theme_light_primary
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hiltViewModel()) {
-
     val isDarkTheme = isSystemInDarkTheme()
     val backgroundColor = if (isDarkTheme) Color.Black else Color.White
     val loginState by remember {
@@ -69,7 +61,7 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
         is Resource.Idle -> {
         }
         is Resource.Loading -> {
-            LinearProgressIndicator(color = md_theme_light_primary, modifier = Modifier.fillMaxWidth())
+        Loader()
         }
         is Resource.Success -> {
             if (authState.data != null) {

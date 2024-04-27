@@ -17,5 +17,5 @@ interface Endpoints {
     fun memberReport(@Header("Authorization") authToken:String?,@Field("member_id") memberId: String?,@Field("church_id") churchId: String?): Call<MemberReportData>
     @FormUrlEncoded
     @POST("member/customMemberReport.php")
-    fun customMemberReport(@Field("member_id") memberId: String?,@Field("day") day: String?,@Field("month") month: String?,@Field("year") year: String?,@Field("church_id") churchId: String?): Call<MemberReportData>
+    fun customMemberReport(@Header("Authorization") authToken:String?,@Field("member_id") memberId: String?,@Field("day") day: String?,@Field("month") month: String?,@Field("year") year: String?,@Field("church_id") churchId: String?): Call<MemberReportData>
 }

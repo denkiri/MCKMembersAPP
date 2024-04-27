@@ -1,5 +1,8 @@
 package com.example.mckmembersapp.screens.home
+import android.app.DatePickerDialog
 import android.content.res.Configuration
+import android.util.Log
+import android.widget.DatePicker
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +18,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -22,22 +27,23 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.LinearProgressIndicator
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -50,6 +56,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mckmembersapp.R
+import com.example.mckmembersapp.components.Loader
 import com.example.mckmembersapp.components.Toast
 import com.example.mckmembersapp.data.Resource
 import com.example.mckmembersapp.models.auth.Profile
@@ -58,7 +65,9 @@ import com.example.mckmembersapp.models.memberreport.MemberReportData
 import com.example.mckmembersapp.ui.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
+import java.util.Calendar
 import java.util.Currency
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -66,6 +75,9 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
     val isDarkTheme = isSystemInDarkTheme()
     val backgroundColor = if (isDarkTheme) Color.Black else Color.White
     val textColor = if (isDarkTheme) Color.White else Color.Black
+    val day = remember { mutableStateOf("") }
+    val month = remember { mutableStateOf("") }
+    val year = remember { mutableStateOf("") }
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -75,7 +87,40 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
                 ),
                 title = {
                     Text("Methodist Church in Kenya ")
+                },
+                actions = {
+                    val mContext = LocalContext.current
+                    val mYear: Int
+                    val mMonth: Int
+                    val mDay: Int
+                    val mCalendar = Calendar.getInstance()
+                    mYear = mCalendar.get(Calendar.YEAR)
+                    mMonth = mCalendar.get(Calendar.MONTH)
+                    mDay = mCalendar.get(Calendar.DAY_OF_MONTH)
+                    mCalendar.time = Date()
+                    val mDate = remember { mutableStateOf("") }
+                    val mDatePickerDialog = DatePickerDialog(
+                        mContext,
+                        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                            mDate.value = if (mDayOfMonth < 10) "0${mDayOfMonth}" else "$mDayOfMonth"
+                            day.value = if (mDayOfMonth < 10) "0${mDayOfMonth}" else "$mDayOfMonth"
+                            val mon = mMonth + 1
+                            month.value = if (mon < 10) "0${mon}" else "${mon}"
+                            year.value = "$mYear"
+                        }, mYear, mMonth, mDay
+                    )
+                    IconButton(onClick = {
+                        mDatePickerDialog.show()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Filled.CalendarMonth,
+                            contentDescription = "Localized description"
+                        )
+                    }
                 }
+
+
+
             )
         },
     ){ innerPadding ->
@@ -85,69 +130,120 @@ fun HomeScreen(navController: NavHostController, viewModel: HomeViewModel = hilt
                 .background(color = backgroundColor)
                 .padding(innerPadding)
         ) {
-            Column {
+                UiSetup(viewModel, navController,day.value,month.value,year.value)
 
-                val reportState by viewModel.memberReportRequestResult.collectAsState()
-                val profileState by viewModel.profileRequestResult.collectAsState()
 
-                LaunchedEffect(profileState) {
-                    if (profileState is Resource.Idle) {
-                        viewModel.getProfile()
-                    }
-                }
-                when (profileState) {
-                    is Resource.Idle -> {
-                    }
-
-                    is Resource.Loading -> {
-                        LinearProgressIndicator()
-                    }
-
-                    is Resource.Success -> {
-                        HeaderCard(profileState.data, navController)
-                        LaunchedEffect(reportState) {
-                            if (reportState is Resource.Idle) {
-                                viewModel.getMemberReportData(
-                                    profileState.data?.token.toString(),
-                                    profileState.data?.member_id.toString(),
-                                    profileState.data?.church_id.toString()
-                                )
-                            }
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        ErrorPage(navController)
-                        Toast(message = profileState.message.toString())
-                    }
-                }
-                when (reportState) {
-                    is Resource.Idle -> {
-                    }
-
-                    is Resource.Loading -> {
-                        LinearProgressIndicator(color = md_theme_light_primary, modifier = Modifier.fillMaxWidth())
-                    }
-
-                    is Resource.Success -> {
-                        if (reportState.data != null) {
-                            Report(reportState.data)
-                            ReceiptCardView(reportState.data, navController)
-                        }
-                    }
-
-                    is Resource.Error -> {
-                        Toast(message = reportState.message.toString())
-                        ErrorPage(navController)
-                    }
-                }
-
-            }
         }
     }
 
 
 }
+
+
+@Composable
+private fun UiSetup(
+    viewModel: HomeViewModel,
+    navController: NavHostController,
+    day: String,
+    month: String,
+    year: String
+) {
+    val reportState by viewModel.memberReportRequestResult.collectAsState()
+    val customReportState by viewModel.customMemberReportRequestResult.collectAsState()
+    val profileState by viewModel.profileRequestResult.collectAsState()
+    LaunchedEffect(profileState) {
+        if (profileState is Resource.Idle) {
+            viewModel.getProfile()
+        }
+    }
+    LaunchedEffect(day) {
+        if (day.isNotBlank() && month.isNotBlank() && year.isNotBlank()) {
+            Log.d("Selected Date", "ProfileData: $day")
+                viewModel.getCustomMemberReportData(
+                    profileState.data?.token.toString(),
+                    profileState.data?.member_id.toString(),
+                    "${month}/${day}/${year}",
+                    month,
+                    year,
+                    profileState.data?.church_id.toString()
+                )
+            }
+        }
+
+    when (profileState) {
+        is Resource.Success -> {
+            LaunchedEffect(reportState) {
+                if (reportState is Resource.Idle) {
+                    viewModel.getMemberReportData(
+                        profileState.data?.token.toString(),
+                        profileState.data?.member_id.toString(),
+                        profileState.data?.church_id.toString()
+                    )
+                }
+            }
+        }
+        is Resource.Error -> {
+            ErrorPage(navController)
+            Toast(message = profileState.message.toString())
+        }
+
+        is Resource.Idle -> {}
+        is Resource.Loading -> {
+            Loader()
+
+        }
+    }
+    when (reportState) {
+        is Resource.Success -> {
+            if (reportState.data != null) {
+                Dashboard(profileState, navController, reportState)
+
+            }
+        }
+        is Resource.Error -> {
+            Toast(message = reportState.message.toString())
+            ErrorPage(navController)
+        }
+
+        is Resource.Idle -> {}
+        is Resource.Loading -> {
+            Loader()
+        }
+    }
+    when (customReportState) {
+        is Resource.Success -> {
+            if (customReportState.data != null) {
+                Dashboard(profileState, navController, customReportState)
+
+            }
+        }
+        is Resource.Error -> {
+            Toast(message = customReportState.message.toString())
+            ErrorPage(navController)
+        }
+
+        is Resource.Idle -> {}
+        is Resource.Loading -> {
+            Loader()
+        }
+    }
+}
+
+
+
+@Composable
+private fun Dashboard(
+    profileState: Resource<Profile>,
+    navController: NavHostController,
+    reportState: Resource<MemberReportData>
+) {
+    Column {
+        HeaderCard(profileState.data, navController)
+        Report(reportState.data)
+        ReceiptCardView(reportState.data, navController)
+    }
+}
+
 
 @Composable
 fun HeaderCard(profile: Profile?,navController: NavHostController){
