@@ -13,6 +13,9 @@ interface Endpoints {
     @POST("Auth/signinMember.php")
     fun signIn(@Field("mobile_number") mobileNumber: String?, @Field("password") password: String?): Call<ProfileData>
     @FormUrlEncoded
+    @POST("Auth/changeMemberPassword.php")
+    fun changePassword(@Field("mobile_number") mobileNumber: String?, @Field("password") password: String?): Call<ProfileData>
+    @FormUrlEncoded
     @POST("member/report.php")
     fun memberReport(@Header("Authorization") authToken:String?,@Field("member_id") memberId: String?,@Field("church_id") churchId: String?): Call<MemberReportData>
     @FormUrlEncoded

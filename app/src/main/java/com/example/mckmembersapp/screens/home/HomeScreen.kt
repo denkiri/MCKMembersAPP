@@ -156,14 +156,51 @@ private fun UiSetup(
             viewModel.getProfile()
         }
     }
-    LaunchedEffect(day) {
+    LaunchedEffect(day,month,year) {
         if (day.isNotBlank() && month.isNotBlank() && year.isNotBlank()) {
             Log.d("Selected Date", "ProfileData: $day")
+            var mMonth:String? = null
+            if(month=="01"){
+                mMonth = "January"
+            }
+            if(month=="02"){
+                mMonth="February"
+            }
+            if(month=="03"){
+                mMonth="March"
+            }
+            if(month=="04"){
+                mMonth="April"
+            }
+            if(month=="05"){
+                mMonth="May"
+            }
+            if(month=="06"){
+                mMonth="June"
+            }
+            if(month=="07"){
+                mMonth="July"
+            }
+            if(month=="08"){
+                mMonth="August"
+            }
+            if(month=="09"){
+                mMonth="September"
+            }
+            if(month=="10"){
+                mMonth="October"
+            }
+            if(month=="11"){
+                mMonth="November"
+            }
+            if(month=="12"){
+                mMonth="December"
+            }
                 viewModel.getCustomMemberReportData(
                     profileState.data?.token.toString(),
                     profileState.data?.member_id.toString(),
                     "${month}/${day}/${year}",
-                    month,
+                    mMonth,
                     year,
                     profileState.data?.church_id.toString()
                 )

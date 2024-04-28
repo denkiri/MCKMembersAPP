@@ -39,6 +39,21 @@ class LoginRepository @Inject constructor(private val api: Endpoints, db: MCKDat
             Resource.Error(message = exception.message.toString())
         }
     }
+    suspend fun changeMemberPassword(mobileNumber: String, password: String): Resource<ProfileData> {
+        return try {
+            Resource.Loading(data = true)
+            val response = api.changePassword(mobileNumber, password).await()
+            Resource.Loading(data = false)
+
+            run {
+                Log.d("Response", "ProfileData: $response")
+                Resource.Success(data = response)
+            }
+        } catch (exception: Exception) {
+            Log.d("ErrorResponse", "Error: ${exception.message.toString()}")
+            Resource.Error(message = exception.message.toString())
+        }
+    }
     @OptIn(DelicateCoroutinesApi::class)
     fun saveProfile(data: Profile) {
         GlobalScope.launch(context = Dispatchers.IO) {

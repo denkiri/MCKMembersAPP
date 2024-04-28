@@ -112,7 +112,90 @@ fun PasswordTextField(
         )
     )
 }
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun PinTextField(
+    modifier: Modifier = Modifier,
+    value: String,
+    onValueChange: (String) -> Unit,
+    label: String,
+    isError: Boolean = false,
+    errorText: String = "",
+    imeAction: ImeAction = ImeAction.Done
+) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+    val keyboardController = LocalSoftwareKeyboardController.current
 
+    var isPasswordVisible by remember {
+        mutableStateOf(false)
+    }
+
+    OutlinedTextField(
+        modifier = modifier,
+        value = value,
+        onValueChange = onValueChange,
+        label = {
+            Text(text = label,color=textColor)
+        },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.Pin,
+                contentDescription = "Password icon",
+                tint = textColor // Set the icon color to match the text color
+            )
+        },
+        trailingIcon = {
+            IconButton(onClick = {
+                isPasswordVisible = !isPasswordVisible
+            }) {
+
+                val visibleIconAndText = Pair(
+                    first = Icons.Outlined.Visibility,
+                    second = stringResource(id = R.string.icon_password_visible)
+                )
+
+                val hiddenIconAndText = Pair(
+                    first = Icons.Outlined.VisibilityOff,
+                    second = stringResource(id = R.string.icon_password_hidden),
+
+                    )
+
+                val passwordVisibilityIconAndText =
+                    if (isPasswordVisible) visibleIconAndText else hiddenIconAndText
+
+                // Render Icon
+                Icon(
+                    imageVector = passwordVisibilityIconAndText.first,
+                    contentDescription = passwordVisibilityIconAndText.second,
+                    tint = textColor
+                )
+            }
+        },
+        singleLine = true,
+        visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Password,
+            imeAction = imeAction
+        ),
+        keyboardActions = KeyboardActions(onDone = {
+            keyboardController?.hide()
+        }),
+        isError = isError,
+        supportingText = {
+            if (isError) {
+                // ErrorTextInputField(text = errorText)
+            }
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            textColor, // Set the text color here
+            focusedBorderColor = textColor,
+            unfocusedBorderColor = textColor,
+            unfocusedTextColor =textColor,
+            cursorColor =textColor,
+        )
+    )
+}
 /**
  * Email Text Field
  */

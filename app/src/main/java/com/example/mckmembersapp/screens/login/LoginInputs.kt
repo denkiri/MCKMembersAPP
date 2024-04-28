@@ -66,6 +66,51 @@ fun LoginInputs(
     }
 }
 @Composable
+fun ChangePasswordInputs(
+    loginState: LoginState,
+    onEmailChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+) {
+    val isDarkTheme = isSystemInDarkTheme()
+    val textColor = if (isDarkTheme) Color.White else Color.Black
+
+    // Login Inputs Section
+    Column(modifier = Modifier.fillMaxSize() .padding(top = 128.dp),verticalArrangement = Arrangement.Center,) {
+        Text(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal,
+            text = stringResource(id = R.string.login_heading_text),
+            color= textColor
+        )
+        UsernameTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.paddingLarge),
+
+            value = loginState.username,
+            onValueChange = onEmailChange,
+            label = stringResource(id = R.string.mobile),
+            isError = loginState.errorState.usernameErrorState.hasError,
+            errorText = stringResource(id = loginState.errorState.usernameErrorState.errorMessageStringResource)
+        )
+
+
+        // Password
+        PasswordTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.dimens.paddingLarge),
+            value = loginState.password,
+            onValueChange = onPasswordChange,
+            label = stringResource(id = R.string.change_password_label),
+            isError = loginState.errorState.passwordErrorState.hasError,
+            errorText = stringResource(id = loginState.errorState.passwordErrorState.errorMessageStringResource),
+            imeAction = ImeAction.Done
+        )
+
+    }
+}
+@Composable
 fun RegisterInputs(
     loginState: LoginState,
     onEmailChange: (String) -> Unit,

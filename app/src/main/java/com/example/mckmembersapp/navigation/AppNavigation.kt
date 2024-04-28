@@ -11,6 +11,7 @@ import androidx.navigation.navArgument
 import com.example.mckmembersapp.screens.home.HomeScreen
 import com.example.mckmembersapp.screens.home.HomeViewModel
 import com.example.mckmembersapp.screens.home.Preview2
+import com.example.mckmembersapp.screens.login.ChangePasswordScreen
 import com.example.mckmembersapp.screens.login.LoginViewModel
 import com.example.mckmembersapp.screens.login.LoginScreen
 import com.example.mckmembersapp.screens.splashscreen.SplashScreen
@@ -36,6 +37,10 @@ fun AppNavigation() {
         composable("home_screen") {
             val homeViewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(navController = navController, viewModel = homeViewModel)
+        }
+        composable("change_password") {
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            ChangePasswordScreen(navController = navController, viewModel = loginViewModel)
         }
         composable(
             route = "preview/{receiptNumber}/{status}/{date}/{firstName}/{secondName}/{surname}/{amount}",
