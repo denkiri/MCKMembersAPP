@@ -8,17 +8,27 @@
       <entry key="IntroPreview">
         <State />
       </entry>
-      <entry key="LoginScreenPreview">
+      <entry key="OTPVerificationPrev">
         <State />
       </entry>
       <entry key="ReceiptCardPreview">
         <State />
       </entry>
-      <entry key="UsernameTextFieldPreview">
-        <State />
-      </entry>
       <entry key="app">
-        <State />
+        <State>
+          <targetSelectedWithDropDown>
+            <Target>
+              <type value="QUICK_BOOT_TARGET" />
+              <deviceKey>
+                <Key>
+                  <type value="VIRTUAL_DEVICE_PATH" />
+                  <value value="$USER_HOME$/.android/avd/Android11.avd" />
+                </Key>
+              </deviceKey>
+            </Target>
+          </targetSelectedWithDropDown>
+          <timeTargetWasSelectedWithDropDown value="2024-05-01T11:03:54.316554Z" />
+        </State>
       </entry>
     </value>
   </component>

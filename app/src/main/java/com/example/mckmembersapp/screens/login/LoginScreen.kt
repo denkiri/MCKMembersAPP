@@ -75,6 +75,8 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
             Toast(message = authState.data.toString())
             Log.d("loginDataResponse", "errorMessage: ${authState.message.toString()}")
         }
+
+        else -> {}
     }
 
     Box(modifier = Modifier
@@ -157,7 +159,7 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
                                     modifier = Modifier
                                         .padding(start = AppTheme.dimens.paddingExtraSmall)
                                         .clickable {
-                                            navController.navigate("change_password")
+                                            navController.navigate("otp_verification")
                                         },
                                     text = stringResource(id = R.string.forgot_password),
                                     color = MaterialTheme.colorScheme.primary

@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "310198917455",
+    "project_id": "mck-kenya",
+    "storage_bucket": "mck-kenya.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310198917455:android:896c229fd16f64f6c9cd3a",
+        "android_client_info": {
+          "package_name": "com.deletech.tithe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310198917455-ugta803pd2ohogrsgj7ahj6trds8nain.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr_ZvmayxeUhawjYZNZBRpc2T8GJZvLK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310198917455-ugta803pd2ohogrsgj7ahj6trds8nain.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:310198917455:android:2e09c66a79c1385ec9cd3a",
+        "android_client_info": {
+          "package_name": "com.example.mckmembersapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "310198917455-ugta803pd2ohogrsgj7ahj6trds8nain.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDr_ZvmayxeUhawjYZNZBRpc2T8GJZvLK0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "310198917455-ugta803pd2ohogrsgj7ahj6trds8nain.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

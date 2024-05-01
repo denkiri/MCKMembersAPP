@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hiltAndroid)
     id ("kotlin-kapt")
+    id("com.google.gms.google-services")
+    alias(libs.plugins.googleAndroidLibrariesMapsplatformSecretsGradlePlugin)
 }
 
 android {
@@ -67,6 +69,11 @@ dependencies {
     implementation( libs.retrofit)
     implementation(libs.converter.gson)
     implementation (libs.androidx.room.runtime)
+    implementation(libs.firebase.auth)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.play.services.maps)
+    implementation (libs.androidx.browser)
+    implementation(libs.androidx.appcompat)
     kapt (libs.androidx.room.compiler)
     annotationProcessor (libs.androidx.room.compiler)
     api (libs.kotlinx.coroutines.android)

@@ -14,6 +14,7 @@ import com.example.mckmembersapp.screens.home.Preview2
 import com.example.mckmembersapp.screens.login.ChangePasswordScreen
 import com.example.mckmembersapp.screens.login.LoginViewModel
 import com.example.mckmembersapp.screens.login.LoginScreen
+import com.example.mckmembersapp.screens.login.OTPVerification
 import com.example.mckmembersapp.screens.splashscreen.SplashScreen
 import kotlinx.coroutines.delay
 
@@ -41,6 +42,9 @@ fun AppNavigation() {
         composable("change_password") {
             val loginViewModel = hiltViewModel<LoginViewModel>()
             ChangePasswordScreen(navController = navController, viewModel = loginViewModel)
+        }
+        composable("otp_verification") {
+            OTPVerification(navController = navController)
         }
         composable(
             route = "preview/{receiptNumber}/{status}/{date}/{firstName}/{secondName}/{surname}/{amount}",
