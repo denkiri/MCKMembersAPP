@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -66,9 +68,11 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
         }
         is Resource.Loading -> {
         Loader()
+            Toast(message = "Loading...Please wait")
         }
         is Resource.Success -> {
             if (authState.data != null) {
+                Toast(message = authState.data?.message.toString())
             }
         }
         is Resource.Error -> {
@@ -151,10 +155,22 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
                                 }
                             )
                             Row(
-                                modifier = Modifier.padding(AppTheme.dimens.paddingNormal).fillMaxWidth(),
+                                modifier = Modifier
+                                    .padding(AppTheme.dimens.paddingNormal)
+                                    .fillMaxWidth(),
                                 horizontalArrangement = Arrangement.Center,
                                 verticalAlignment = Alignment.CenterVertically
                             ){
+                                Text(
+                                    modifier = Modifier
+                                        .padding(start = AppTheme.dimens.paddingExtraSmall)
+                                        .clickable {
+                                            navController.navigate("reset_default_password")
+                                        },
+                                    text = stringResource(id = R.string.reset_button_text),
+                                    color = MaterialTheme.colorScheme.primary
+                                )
+                                Spacer(modifier = Modifier.height(10.dp).width(40.dp))
                                 Text(
                                     modifier = Modifier
                                         .padding(start = AppTheme.dimens.paddingExtraSmall)

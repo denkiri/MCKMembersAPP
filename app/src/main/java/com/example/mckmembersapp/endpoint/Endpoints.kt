@@ -16,6 +16,9 @@ interface Endpoints {
     @POST("Auth/changeMemberPassword.php")
     fun changePassword(@Field("mobile_number") mobileNumber: String?, @Field("password") password: String?): Call<ProfileData>
     @FormUrlEncoded
+    @POST("Auth/resetDefaultPassword.php")
+    fun resetDefaultPassword(@Field("mobile_number") mobileNumber: String?, @Field("password") password: String?, @Field("defaultPassword") defaultPassword: String?): Call<ProfileData>
+    @FormUrlEncoded
     @POST("member/report.php")
     fun memberReport(@Header("Authorization") authToken:String?,@Field("member_id") memberId: String?,@Field("church_id") churchId: String?): Call<MemberReportData>
     @FormUrlEncoded

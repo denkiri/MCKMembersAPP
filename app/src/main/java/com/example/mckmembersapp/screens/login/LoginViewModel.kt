@@ -150,6 +150,24 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
             }
         }
     }
+    fun resetDefaultPassword(mobileNumber: String, password: String,defaultPassword:String) {
+        viewModelScope.launch {
+            _loginRequestResult.value = Resource.Loading()
+            try {
+                val loginResponse = repository.resetDefaultPassword(mobileNumber, password,defaultPassword)
+                if (loginResponse is Resource.Success) {
+                    _isLoading.value = false
+                    _loginRequestResult.value = Resource.Success(loginResponse.data!!)
+                } else {
+                    _loginRequestResult.value = Resource.Error(loginResponse.message)
+                    _isLoading.value = false
+                }
+            } catch (e: Exception) {
+                _isLoading.value = false
+                _loginRequestResult.value = Resource.Error("Login failed: ${e.message}")
+            }
+        }
+    }
     private val _profileResult = MutableStateFlow<Resource<Profile>>(Resource.Idle())
     val profileResult: StateFlow<Resource<Profile>> = _profileResult
     fun getProfile() {
