@@ -3,6 +3,7 @@ import android.app.DatePickerDialog
 import android.content.res.Configuration
 import android.util.Log
 import android.widget.DatePicker
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -40,6 +41,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -53,6 +55,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.example.mckmembersapp.R
@@ -63,6 +66,7 @@ import com.example.mckmembersapp.models.auth.Profile
 import com.example.mckmembersapp.models.contribution.Contribution
 import com.example.mckmembersapp.models.memberreport.MemberReportData
 import com.example.mckmembersapp.ui.theme.md_theme_light_primary
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Calendar
@@ -233,7 +237,7 @@ private fun UiSetup(
     when (reportState) {
         is Resource.Success -> {
             if (reportState.data != null) {
-                Dashboard(profileState, navController, reportState)
+                Dashboard(profileState, navController, reportState,viewModel)
 
             }
         }
@@ -250,7 +254,7 @@ private fun UiSetup(
     when (customReportState) {
         is Resource.Success -> {
             if (customReportState.data != null) {
-                Dashboard(profileState, navController, customReportState)
+                Dashboard(profileState, navController, customReportState,viewModel)
 
             }
         }
@@ -265,17 +269,22 @@ private fun UiSetup(
         }
     }
 }
-
+@Composable
+private  fun LogoutText(){
+ Toast(message = "lo")
+}
 
 
 @Composable
 private fun Dashboard(
     profileState: Resource<Profile>,
     navController: NavHostController,
-    reportState: Resource<MemberReportData>
+    reportState: Resource<MemberReportData>,
+    viewModel: HomeViewModel
+
 ) {
     Column {
-        HeaderCard(profileState.data, navController)
+        HeaderCard(profileState.data, navController,viewModel)
         Report(reportState.data)
         ReceiptCardView(reportState.data, navController)
     }
@@ -283,11 +292,17 @@ private fun Dashboard(
 
 
 @Composable
-fun HeaderCard(profile: Profile?,navController: NavHostController){
+fun HeaderCard(profile: Profile?,navController: NavHostController,viewModel: HomeViewModel){
     val isDarkTheme = isSystemInDarkTheme()
     val backgroundColor = if (isDarkTheme) Color.Black else Color.White
     val textColor = if (isDarkTheme) Color.White else Color.Black
     val scope = rememberCoroutineScope()
+    var showToast by remember { mutableStateOf(false) }
+    if (showToast) {
+        Toast(message = "Logging out...")
+        // Reset showToast state after showing the toast
+        showToast = false
+    }
     ElevatedCard(
         elevation = CardDefaults.cardElevation(
             defaultElevation = 6.dp
@@ -335,10 +350,6 @@ fun HeaderCard(profile: Profile?,navController: NavHostController){
                             }
 
                         }
-
-
-
-
                     Image(
                         modifier = Modifier
                             .size(50.dp)
@@ -346,7 +357,12 @@ fun HeaderCard(profile: Profile?,navController: NavHostController){
                             .align(Alignment.CenterVertically)
                             .clickable {
                                 scope.launch {
-                                    navController.navigate("login")
+                                    showToast = true
+                                    viewModel.updateLoginStatus(false)
+                                    delay(3000)
+                                    navController.navigate("splash")
+
+
                                 }
                             },
                         painter = painterResource(id = R.drawable.baseline_exit_to_app_24),
@@ -861,7 +877,7 @@ fun Report(memberReportData: MemberReportData?) {
 @Preview(uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Preview
 fun HeaderCardPreview(){
-    HeaderCard(profile = null, rememberNavController())
+    HeaderCard(profile = null, rememberNavController(), viewModel())
 
 }
 @Composable

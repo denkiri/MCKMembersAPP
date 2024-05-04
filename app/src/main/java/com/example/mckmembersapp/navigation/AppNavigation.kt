@@ -25,11 +25,8 @@ fun AppNavigation() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "splash") {
         composable("splash") {
-            SplashScreen(navController = navController)
-            LaunchedEffect(key1 = true) {
-                delay(3000) // Delay for 3 seconds (adjust as needed)
-                navController.navigate("login")
-            }
+            val loginViewModel = hiltViewModel<LoginViewModel>()
+            SplashScreen(navController = navController, viewModel = loginViewModel)
         }
         composable("login") {
             val loginViewModel = hiltViewModel<LoginViewModel>()

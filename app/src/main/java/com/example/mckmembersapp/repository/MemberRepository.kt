@@ -9,6 +9,9 @@ import com.example.mckmembersapp.endpoint.Endpoints
 import com.example.mckmembersapp.models.auth.Profile
 import com.example.mckmembersapp.models.memberreport.MemberReportData
 import com.example.mckmembersapp.storage.MCKDatabase
+import com.example.mckmembersapp.storage.setLoginStatus
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import retrofit2.await
 import javax.inject.Inject
 class MemberRepository @Inject constructor(private val api: Endpoints, db: MCKDatabase, application: Application){
@@ -62,6 +65,14 @@ class MemberRepository @Inject constructor(private val api: Endpoints, db: MCKDa
         }
 
         return resultLiveData
+    }
+    suspend fun setLoginStatus(isLoggedIn: Boolean): Flow<Resource<Unit>> = flow {
+        try {
+            context.setLoginStatus(isLoggedIn)
+            emit(Resource.Success(Unit))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message, data = null))
+        }
     }
 
     }

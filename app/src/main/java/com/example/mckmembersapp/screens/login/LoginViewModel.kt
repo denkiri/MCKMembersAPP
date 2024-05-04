@@ -209,6 +209,29 @@ class LoginViewModel @Inject constructor(private val repository: LoginRepository
     fun saveProfile(data: Profile){
         repository.saveProfile(data)
     }
+    private val _loginStatusResult = MutableStateFlow<Resource<Unit>>(Resource.Idle())
+    fun updateLoginStatus(isLoggedIn: Boolean) {
+        viewModelScope.launch {
+            _loginStatusResult.value = Resource.Loading()
+            repository.setLoginStatus(isLoggedIn).collect { result ->
+                _loginStatusResult.value = result
+            }
+        }
+    }
+    private val _loginStatusResultB = MutableStateFlow<Resource<Boolean?>>(Resource.Idle())
+    val loginStatusResultB: StateFlow<Resource<Boolean?>> = _loginStatusResultB
 
-
+    fun fetchLoginStatus() {
+        viewModelScope.launch {
+            _loginStatusResultB.value = Resource.Loading()
+            repository.getLoginStatus().collect { result ->
+                _loginStatusResultB.value = result
+                _isLoading.value = false // Stop loading when successful
+                // Update loading state based on the result
+                if (result is Resource.Success) {
+                    _isLoading.value = false // Stop loading when successful
+                }
+            }
+        }
+    }
 }

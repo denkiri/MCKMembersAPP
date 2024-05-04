@@ -84,4 +84,13 @@ class HomeViewModel @Inject constructor(private val repository: MemberRepository
             }
         }
     }
+    private val _loginStatusResult = MutableStateFlow<Resource<Unit>>(Resource.Idle())
+    fun updateLoginStatus(isLoggedIn: Boolean) {
+        viewModelScope.launch {
+            _loginStatusResult.value = Resource.Loading()
+            repository.setLoginStatus(isLoggedIn).collect { result ->
+                _loginStatusResult.value = result
+            }
+        }
+    }
 }

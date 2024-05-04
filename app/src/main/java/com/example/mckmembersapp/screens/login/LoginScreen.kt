@@ -58,6 +58,7 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
     LaunchedEffect(authState) {
         if (authState is Resource.Success && authState.data?.profile != null) {
             viewModel.saveProfile(authState.data!!.profile)
+            viewModel.updateLoginStatus(true)
             navController.navigate("home_screen")
             viewModel.resetStates()
             Log.d("loginDataResponse", "ProfileData: ${authState.data}")
@@ -170,7 +171,12 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
                                     text = stringResource(id = R.string.reset_button_text),
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                Spacer(modifier = Modifier.height(10.dp).width(40.dp))
+                                Text(
+                                    modifier = Modifier
+                                        .padding(start = AppTheme.dimens.paddingExtraSmall),
+                                    text = "|",
+                                    color = MaterialTheme.colorScheme.primary
+                                )
                                 Text(
                                     modifier = Modifier
                                         .padding(start = AppTheme.dimens.paddingExtraSmall)

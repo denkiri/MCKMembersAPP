@@ -10,9 +10,13 @@ import com.example.mckmembersapp.endpoint.Endpoints
 import com.example.mckmembersapp.models.auth.Profile
 import com.example.mckmembersapp.models.auth.ProfileData
 import com.example.mckmembersapp.storage.MCKDatabase
+import com.example.mckmembersapp.storage.getLoginStatus
+import com.example.mckmembersapp.storage.setLoginStatus
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import retrofit2.await
 import javax.inject.Inject
@@ -95,6 +99,23 @@ class LoginRepository @Inject constructor(private val api: Endpoints, db: MCKDat
         }
 
         return resultLiveData
+    }
+    suspend fun setLoginStatus(isLoggedIn: Boolean): Flow<Resource<Unit>> = flow {
+        try {
+            context.setLoginStatus(isLoggedIn)
+            emit(Resource.Success(Unit))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message, data = null))
+        }
+    }
+
+    suspend fun getLoginStatus(): Flow<Resource<Boolean?>> = flow {
+        try {
+            val loginStatus = context.getLoginStatus()
+            emit(Resource.Success(loginStatus))
+        } catch (e: Exception) {
+            emit(Resource.Error(message = e.message, data = null))
+        }
     }
 
 
