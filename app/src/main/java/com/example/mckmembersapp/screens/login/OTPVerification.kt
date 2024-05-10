@@ -20,11 +20,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -39,8 +40,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.mckmembersapp.R
+import com.example.mckmembersapp.components.Loader
 import com.example.mckmembersapp.components.NormalButton
-import com.example.mckmembersapp.ui.theme.md_theme_light_primary
 import com.google.firebase.FirebaseException
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
@@ -90,6 +91,9 @@ fun FirebaseUI(context: Context,navController: NavController) {
     }
     var mAuth: FirebaseAuth = FirebaseAuth.getInstance()
     lateinit var callbacks: OnVerificationStateChangedCallbacks
+    var generateOtpLoading by remember { mutableStateOf(false) }
+    var verifyOtpLoading by remember { mutableStateOf(false) }
+    var buttonEnabled by remember { mutableStateOf(true) }
     Column(
         // adding modifier for our column
         modifier = Modifier
@@ -98,6 +102,10 @@ fun FirebaseUI(context: Context,navController: NavController) {
             .background(color = backgroundColor),
         verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Spacer(modifier = Modifier.height(10.dp))
+        if (generateOtpLoading || verifyOtpLoading) {
+            Loader()
+        }
         OutlinedTextField(
             value = phoneNumber.value,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -110,14 +118,21 @@ fun FirebaseUI(context: Context,navController: NavController) {
             singleLine = true,
         )
         Spacer(modifier = Modifier.height(10.dp))
+
         NormalButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.generate_otp),
+            enabled = buttonEnabled,
             onClick = {
                 if (TextUtils.isEmpty(phoneNumber.value)) {
                     Toast.makeText(context, "Please enter phone number..", Toast.LENGTH_SHORT)
                         .show()
                 } else {
+                    buttonEnabled = false
+                    generateOtpLoading = true
+                    message.value = "Generating otp,Please wait..."
+                    Toast.makeText(context, "Generating otp,Please wait...", Toast.LENGTH_SHORT).show()
+
                     val number ="+254${phoneNumber.value}"
                     sendVerificationCode(number, mAuth, context as Activity, callbacks)
                 }
@@ -139,11 +154,14 @@ fun FirebaseUI(context: Context,navController: NavController) {
         NormalButton(
             modifier = Modifier.fillMaxWidth(),
             text = stringResource(id = R.string.verify_otp),
+            enabled = true,
             onClick = {
                 if (TextUtils.isEmpty(otp.value.toString())) {
-                    Toast.makeText(context, "Please enter otp..", Toast.LENGTH_SHORT)
-                        .show()
+                    Toast.makeText(context, "Please enter otp...", Toast.LENGTH_SHORT).show()
                 } else {
+                    Toast.makeText(context, "Verifying otp,Please wait...", Toast.LENGTH_SHORT).show()
+                    message.value = "Verification successful"
+                    verifyOtpLoading = true
                     val credential: PhoneAuthCredential = PhoneAuthProvider.getCredential(
                         verificationID.value, otp.value
                     )
@@ -152,7 +170,8 @@ fun FirebaseUI(context: Context,navController: NavController) {
                         mAuth,
                         context as Activity,
                         context,
-                        message
+                        message,
+                        navController,
                     )
                 }
             }
@@ -170,10 +189,17 @@ fun FirebaseUI(context: Context,navController: NavController) {
     callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
         override fun onVerificationCompleted(p0: PhoneAuthCredential) {
             message.value = "Verification successful"
-            Toast.makeText(context, "Verification successful..", Toast.LENGTH_SHORT).show()
             navController.navigate("change_password")
+            buttonEnabled=true
+            verifyOtpLoading=false
+            generateOtpLoading=false
+//            Toast.makeText(context, "Verification successful..", Toast.LENGTH_SHORT).show()
+
         }
         override fun onVerificationFailed(p0: FirebaseException) {
+            buttonEnabled=true
+            verifyOtpLoading=false
+            generateOtpLoading=false
             message.value = "Fail to verify user : \n" + p0.message
             Toast.makeText(context, "Verification failed..", Toast.LENGTH_SHORT).show()
         }
@@ -194,11 +220,13 @@ private fun signInWithPhoneAuthCredential(
     auth: FirebaseAuth,
     activity: Activity,
     context: Context,
-    message: MutableState<String>
+    message: MutableState<String>,
+    navController: NavController
 ) {
     auth.signInWithCredential(credential)
         .addOnCompleteListener(activity) { task ->
             if (task.isSuccessful) {
+                navController.navigate("change_password")
                 message.value = "Verification successful"
                 Toast.makeText(context, "Verification successful..", Toast.LENGTH_SHORT).show()
             } else {
@@ -216,7 +244,7 @@ private fun sendVerificationCode(
     number: String,
     auth: FirebaseAuth,
     activity: Activity,
-    callbacks: OnVerificationStateChangedCallbacks
+    callbacks: OnVerificationStateChangedCallbacks,
 ) {
     val options = PhoneAuthOptions.newBuilder(auth)
         .setPhoneNumber(number)

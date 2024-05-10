@@ -8,6 +8,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
+import com.example.mckmembersapp.screens.home.CustomReportScreen
 import com.example.mckmembersapp.screens.home.HomeScreen
 import com.example.mckmembersapp.screens.home.HomeViewModel
 import com.example.mckmembersapp.screens.home.Preview2
@@ -36,6 +37,10 @@ fun AppNavigation() {
         composable("home_screen") {
             val homeViewModel = hiltViewModel<HomeViewModel>()
             HomeScreen(navController = navController, viewModel = homeViewModel)
+        }
+        composable("custom_report_screen") {
+            val homeViewModel = hiltViewModel<HomeViewModel>()
+            CustomReportScreen(navController = navController, viewModel = homeViewModel)
         }
         composable("change_password") {
             val loginViewModel = hiltViewModel<LoginViewModel>()

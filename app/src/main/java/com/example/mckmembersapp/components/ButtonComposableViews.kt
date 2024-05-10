@@ -31,6 +31,7 @@ import com.example.mckmembersapp.ui.theme.md_theme_light_primary
 fun NormalButton(
     modifier: Modifier = Modifier,
     text: String,
+    enabled: Boolean = true, // New parameter to indicate button enabled/disabled state
     onClick: () -> Unit
 ) {
     Box(
@@ -42,7 +43,8 @@ fun NormalButton(
             modifier = Modifier.fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 md_theme_light_primary
-            )
+            ),
+            enabled = enabled // Pass enabled parameter to Button
         ) {
             Text(
                 text = text,
@@ -52,6 +54,7 @@ fun NormalButton(
         }
     }
 }
+
 
 @Composable
 fun SmallClickableWithIconAndText(
@@ -84,6 +87,6 @@ fun SmallClickableWithIconAndText(
 @Composable
 fun ButtonPreview() {
     AppTheme {
-        NormalButton(modifier = Modifier, text = "Android", onClick = {} )
+        NormalButton(modifier = Modifier, text = "Android",enabled = true, onClick = {} )
     }
 }
