@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:310198917455:android:896c229fd16f64f6c9cd3a",
+        "mobilesdk_app_id": "1:310198917455:android:1b81fc51ee49d4e7c9cd3a",
         "android_client_info": {
-          "package_name": "com.deletech.tithe"
+          "package_name": "com.deletech.mckmembersapp"
         }
       },
       "oauth_client": [
@@ -36,9 +36,9 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:310198917455:android:2e09c66a79c1385ec9cd3a",
+        "mobilesdk_app_id": "1:310198917455:android:896c229fd16f64f6c9cd3a",
         "android_client_info": {
-          "package_name": "com.example.mckmembersapp"
+          "package_name": "com.deletech.tithe"
         }
       },
       "oauth_client": [
