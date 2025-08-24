@@ -14,9 +14,9 @@ android {
     defaultConfig {
         applicationId = "com.deletech.mckmembersapp"
         minSdk = 24
-        targetSdk = 34
-        versionCode = 2
-        versionName = "1.1"
+        targetSdk = 36
+        versionCode = 4
+        versionName = "1.3"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -44,7 +44,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
+        kotlinCompilerExtensionVersion = "1.5.14"
     }
     packaging {
         resources {
@@ -74,6 +74,7 @@ dependencies {
     implementation(libs.play.services.maps)
     implementation (libs.androidx.browser)
     implementation(libs.androidx.appcompat)
+    testImplementation(libs.junit.junit)
     kapt (libs.androidx.room.compiler)
     annotationProcessor (libs.androidx.room.compiler)
     api (libs.kotlinx.coroutines.android)
@@ -90,6 +91,7 @@ dependencies {
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
     kapt (libs.androidx.hilt.compiler)
+
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

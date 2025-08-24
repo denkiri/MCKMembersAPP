@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -127,18 +128,14 @@ fun LoginScreen(navController: NavHostController, viewModel: LoginViewModel = hi
                                 loginState = loginState,
                                 onEmailChange = { inputString ->
                                     viewModel.onUiEvent(
-                                        loginUiEvent = LoginUiEvent.EmailChanged(
-                                            inputString
-                                        )
+                                        loginUiEvent = LoginUiEvent.EmailChanged(inputString)
                                     )
                                 },
                                 onPasswordChange = { inputString ->
                                     viewModel.onUiEvent(
-                                        loginUiEvent = LoginUiEvent.PasswordChanged(
-                                            inputString
-                                        )
+                                        loginUiEvent = LoginUiEvent.PasswordChanged(inputString)
                                     )
-                                },
+                                }
                             )
                             NormalButton(
                                 modifier = Modifier.fillMaxWidth(),

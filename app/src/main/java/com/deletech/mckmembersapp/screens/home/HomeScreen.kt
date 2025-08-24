@@ -393,6 +393,7 @@ fun ReceiptCard(receipt:Contribution?,navController: NavHostController){
     val isDarkTheme = isSystemInDarkTheme()
     val backgroundColor = if (isDarkTheme) Color.Black else Color.White
     val textColor = if (isDarkTheme) Color.White else Color.Black
+
     val currencyFormat = remember {
         NumberFormat.getCurrencyInstance().apply {
             currency = Currency.getInstance("KSh")

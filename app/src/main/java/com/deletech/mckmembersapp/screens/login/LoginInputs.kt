@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
@@ -30,41 +31,51 @@ fun LoginInputs(
     val textColor = if (isDarkTheme) Color.White else Color.Black
 
     // Login Inputs Section
-    Column(modifier = Modifier.fillMaxSize() .padding(top = 128.dp),verticalArrangement = Arrangement.Center,) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 128.dp),
+        verticalArrangement = Arrangement.Center
+    ) {
         Text(
             fontSize = 16.sp,
             fontWeight = FontWeight.Normal,
             text = stringResource(id = R.string.login_heading_text),
-            color= textColor
+            color = textColor
         )
+        // Username Input Field
         UsernameTextField(
             modifier = Modifier
                 .fillMaxWidth()
+                .testTag("mobile")
                 .padding(top = AppTheme.dimens.paddingLarge),
-
             value = loginState.username,
-            onValueChange = onEmailChange,
+            onValueChange = { newUsername ->
+                onEmailChange(newUsername)
+            },
             label = stringResource(id = R.string.mobile),
             isError = loginState.errorState.usernameErrorState.hasError,
             errorText = stringResource(id = loginState.errorState.usernameErrorState.errorMessageStringResource)
         )
 
-
-        // Password
+        // Password Input Field
         PasswordTextField(
             modifier = Modifier
                 .fillMaxWidth()
+                .testTag("password")
                 .padding(top = AppTheme.dimens.paddingLarge),
             value = loginState.password,
-            onValueChange = onPasswordChange,
+            onValueChange = { newPassword ->
+                onPasswordChange(newPassword)
+            },
             label = stringResource(id = R.string.login_password_label),
             isError = loginState.errorState.passwordErrorState.hasError,
             errorText = stringResource(id = loginState.errorState.passwordErrorState.errorMessageStringResource),
             imeAction = ImeAction.Done
         )
-
     }
 }
+
 @Composable
 fun ChangePasswordInputs(
     loginState: LoginState,
